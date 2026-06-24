@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic+ Server Patch Notes</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0a0f;
+            --card-bg: rgba(22, 20, 30, 0.6);
+            --card-border: rgba(212, 175, 55, 0.15);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --blue: #00b4d8;
+            --blue-glow: rgba(0, 180, 216, 0.4);
+            
+            /* WoW Class Colors */
+            --color-warrior: #C79C6E;
+            --color-paladin: #F58CBA;
+            --color-hunter: #ABD473;
+            --color-rogue: #FFF569;
+            --color-priest: #FFFFFF;
+            --color-shaman: #0070DE;
+            --color-mage: #40C7EB;
+            --color-warlock: #8787ED;
+            --color-druid: #FF7D0A;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 180, 216, 0.03) 0%, transparent 40%),
+                linear-gradient(180deg, #0b0a0f 0%, #121017 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.35);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 30%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.2));
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Interactive Search Header */
+        .search-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .global-search {
+            width: 100%;
+            background: rgba(22, 20, 30, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 30px;
+            padding: 0.8rem 1.5rem 0.8rem 3rem;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .global-search:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+            background: rgba(22, 20, 30, 0.95);
+        }
+
+        .search-icon-svg {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            fill: var(--text-muted);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+            transition: fill 0.3s ease;
+        }
+
+        .global-search:focus + .search-icon-svg {
+            fill: var(--gold);
+        }
+
+        /* Two-Column Responsive Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-wrapper {
+                display: none; /* Hide sticky TOC on tablets/mobiles */
+            }
+        }
+
+        /* Sidebar Navigation Table of Contents */
+        .sidebar-wrapper {
+            position: relative;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            padding-bottom: 0.5rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.03);
+            padding-left: 0.95rem;
+        }
+
+        .sidebar a.active {
+            color: #fff;
+            background: rgba(212, 175, 55, 0.08);
+            border-left: 3px solid var(--gold);
+            padding-left: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            min-width: 0; /* Prevents flex/grid blowouts */
+        }
+
+        /* Section Layout */
+        section {
+            margin-bottom: 4.5rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--gold);
+            padding-left: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Class Filters Panel */
+        .class-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(22, 20, 30, 0.4);
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+        }
+
+        .class-filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .class-filter-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .class-filter-btn.active {
+            color: #fff;
+            border-color: currentColor;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .class-filter-btn.all.active { border-color: var(--gold); background: rgba(212, 175, 55, 0.15); color: #fff; box-shadow: 0 0 10px rgba(212, 175, 55, 0.1); }
+        .class-filter-btn.warrior { --class-c: var(--color-warrior); }
+        .class-filter-btn.paladin { --class-c: var(--color-paladin); }
+        .class-filter-btn.hunter { --class-c: var(--color-hunter); }
+        .class-filter-btn.rogue { --class-c: var(--color-rogue); }
+        .class-filter-btn.priest { --class-c: var(--color-priest); }
+        .class-filter-btn.shaman { --class-c: var(--color-shaman); }
+        .class-filter-btn.mage { --class-c: var(--color-mage); }
+        .class-filter-btn.warlock { --class-c: var(--color-warlock); }
+        .class-filter-btn.druid { --class-c: var(--color-druid); }
+        .class-filter-btn.subclass { --class-c: var(--blue); }
+
+        .class-filter-btn.warrior.active,
+        .class-filter-btn.paladin.active,
+        .class-filter-btn.hunter.active,
+        .class-filter-btn.rogue.active,
+        .class-filter-btn.priest.active,
+        .class-filter-btn.shaman.active,
+        .class-filter-btn.mage.active,
+        .class-filter-btn.warlock.active,
+        .class-filter-btn.druid.active,
+        .class-filter-btn.subclass.active {
+            border-color: var(--class-c);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--class-c);
+        }
+
+        /* Grid Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Premium Card Design */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.05);
+        }
+
+        /* Class Specific Customizations */
+        .card.warrior::before { background: var(--color-warrior); }
+        .card.warrior h3 { color: var(--color-warrior); }
+        .card.paladin::before { background: var(--color-paladin); }
+        .card.paladin h3 { color: var(--color-paladin); }
+        .card.druid::before { background: var(--color-druid); }
+        .card.druid h3 { color: var(--color-druid); }
+        .card.priest::before { background: var(--color-priest); }
+        .card.priest h3 { color: var(--color-priest); }
+        .card.mage::before { background: var(--color-mage); }
+        .card.mage h3 { color: var(--color-mage); }
+        .card.warlock::before { background: var(--color-warlock); }
+        .card.warlock h3 { color: var(--color-warlock); }
+        .card.hunter::before { background: var(--color-hunter); }
+        .card.hunter h3 { color: var(--color-hunter); }
+        .card.shaman::before { background: var(--color-shaman); }
+        .card.shaman h3 { color: var(--color-shaman); }
+        .card.rogue::before { background: var(--color-rogue); }
+        .card.rogue h3 { color: var(--color-rogue); }
+        .card.system::before { background: var(--blue); }
+        .card.system h3 { color: var(--blue); }
+
+        .card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card ul {
+            list-style: none;
+            margin-top: 0.25rem;
+        }
+
+        .card li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .card strong {
+            color: #fff;
+        }
+
+        .highlight-blue {
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .highlight-gold {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Utilities Card List */
+        .utility-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media(min-width: 768px) {
+            .utility-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .utility-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .utility-item:hover {
+            border-color: rgba(0, 180, 216, 0.2);
+            background: rgba(22, 20, 30, 0.8);
+            transform: translateX(3px);
+        }
+
+        .utility-icon {
+            background: rgba(0, 180, 216, 0.1);
+            color: var(--blue);
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .utility-content h4 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .utility-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tag-new {
+            background: #ef233c;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        /* POECraft Currency Layout */
+        .currency-block {
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .currency-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .currency-title {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tables & Balance Section */
+        .table-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .table-search {
+            background: rgba(22, 20, 30, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            width: 240px;
+            transition: all 0.3s ease;
+        }
+
+        .table-search:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .table-filter-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .table-filter-btn {
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .table-filter-btn:hover {
+            color: #fff;
+        }
+
+        .table-filter-btn.active {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        th.sortable {
+            cursor: pointer;
+            position: relative;
+            padding-right: 1.8rem;
+            user-select: none;
+        }
+
+        th.sortable:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th.sortable::after {
+            content: '⇅';
+            position: absolute;
+            right: 0.75rem;
+            opacity: 0.3;
+            font-size: 0.75rem;
+        }
+
+        th.sortable.asc::after {
+            content: '▲';
+            opacity: 0.8;
+            color: var(--gold);
+        }
+
+        th.sortable.desc::after {
+            content: '▼';
+            opacity: 0.8;
+            color: var(--gold);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-dps {
+            background: rgba(239, 35, 60, 0.15);
+            color: #ef233c;
+            border: 1px solid rgba(239, 35, 60, 0.3);
+        }
+
+        .role-heal {
+            background: rgba(76, 201, 240, 0.15);
+            color: #4cc9f0;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+
+        .role-tank {
+            background: rgba(247, 127, 0, 0.15);
+            color: #f77f00;
+            border: 1px solid rgba(247, 127, 0, 0.3);
+        }
+
+        .class-text-warrior { color: var(--color-warrior); font-weight: 600; }
+        .class-text-paladin { color: var(--color-paladin); font-weight: 600; }
+        .class-text-hunter { color: var(--color-hunter); font-weight: 600; }
+        .class-text-rogue { color: var(--color-rogue); font-weight: 600; }
+        .class-text-priest { color: var(--color-priest); font-weight: 600; }
+        .class-text-shaman { color: var(--color-shaman); font-weight: 600; }
+        .class-text-mage { color: var(--color-mage); font-weight: 600; }
+        .class-text-warlock { color: var(--color-warlock); font-weight: 600; }
+        .class-text-druid { color: var(--color-druid); font-weight: 600; }
+        .class-text-subclass { color: var(--blue); font-weight: 600; }
+
+        /* Hidden helper */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 2.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Classic+ Server</h1>
+        <div class="subtitle">Official Release Patch Notes & Tuning Changelog</div>
+        <div class="search-wrapper">
+            <input type="text" class="global-search" id="globalSearchInput" placeholder="Search patch notes, cards, keywords...">
+            <svg class="search-icon-svg" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Sidebar Navigation Tree -->
+        <div class="sidebar-wrapper">
+            <aside class="sidebar">
+                <h3>Patch Directory</h3>
+                <ul>
+                    <li><a href="#combat-balance" class="toc-link active">🛡️ Combat & Classes</a></li>
+                    <li><a href="#world-qol" class="toc-link">🌍 World Utilities & QoL</a></li>
+                    <li><a href="#pvp-dungeons" class="toc-link">⚔️ PvP & Dungeons</a></li>
+                    <li><a href="#playerbots" class="toc-link">🤖 Playerbots & Nemesis</a></li>
+                    <li><a href="#poe-crafting" class="toc-link">🛠️ PoE Item Crafting</a></li>
+                    <li><a href="#client-addons" class="toc-link">🎨 Addons & Client Patches</a></li>
+                    <li><a href="#balance-metrics" class="toc-link">⚖️ Combat Simulation Stats</a></li>
+                </ul>
+            </aside>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- SECTION 1: CLASSES -->
+            <section id="combat-balance">
+                <h2>🛡️ Class Specializations & Combat Balance</h2>
+                
+                <!-- Class Filtering Tabs -->
+                <div class="class-filters">
+                    <button class="class-filter-btn all active" data-class="all">All Specs</button>
+                    <button class="class-filter-btn warrior" data-class="warrior">Warrior</button>
+                    <button class="class-filter-btn paladin" data-class="paladin">Paladin</button>
+                    <button class="class-filter-btn hunter" data-class="hunter">Hunter</button>
+                    <button class="class-filter-btn rogue" data-class="rogue">Rogue</button>
+                    <button class="class-filter-btn priest" data-class="priest">Priest</button>
+                    <button class="class-filter-btn shaman" data-class="shaman">Shaman</button>
+                    <button class="class-filter-btn mage" data-class="mage">Mage</button>
+                    <button class="class-filter-btn warlock" data-class="warlock">Warlock</button>
+                    <button class="class-filter-btn druid" data-class="druid">Druid</button>
+                    <button class="class-filter-btn subclass" data-class="subclass">Subclasses</button>
+                </div>
+
+                <div class="grid-2" id="classCardsGrid">
+                    
+                    <!-- Paladin -->
+                    <div class="card paladin" data-tag="paladin">
+                        <h3>👑 Paladin</h3>
+                        <ul>
+                            <li><strong>Judgement (with Righteous Fury active):</strong> Now acts as an active <strong>Taunt</strong>. Instantly forces the target to attack you, and scales threat generation directly to <strong>110% of the highest threat target</strong> (minimum 5,000 threat). Plays a custom Druid Growl/Taunt visual on the target.</li>
+                            <li><strong>Holy Shock (Shockadin Spec):</strong> Baselines and damage coefficients significantly scaled up, transforming the caster build into a highly competitive Holy DPS spec.</li>
+                            <li><strong>Level 18 Starter Pack & Spells:</strong> Custom Protection Paladin kit consisting of Soldier's Mail armor set, shield, weapon, 4x 24-slot Portable Holes, and early access to key tanking spells (Righteous Fury, Righteous Defense, and Spiritual Attunement) to enable smooth level-appropriate dungeon runs.</li>
+                            <li><strong>Avenger's Shield Recast & Teleport:</strong> Re-casting Avenger's Shield while the shield is in-flight teleports the Paladin behind the target and triggers a <strong>Shield Burst</strong>, dealing high Holy damage to the target and nearby enemies within 8 yards (150 base + 15/level + 200% Int scaling).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Druid -->
+                    <div class="card druid" data-tag="druid">
+                        <h3>🌿 Druid</h3>
+                        <ul>
+                            <li><strong>Moonkin Form Mana Recovery:</strong> Starfire, Wrath, and Moonfire casts now restore a flat <strong>2% of maximum mana</strong> per cast, solving previous caster Druid downtime issues.</li>
+                            <li><strong>Revive (Out-of-Combat Res):</strong> Automatically learned at level 12 (Spell ID: 50769). Druids now possess a standard non-cooldown resurrection spell.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Priest -->
+                    <div class="card priest" data-tag="priest">
+                        <h3>🔮 Priest</h3>
+                        <ul>
+                            <li><strong>Shadowform Mana Recovery:</strong> All shadow damage dealt now restores mana equal to <strong>15% of damage dealt</strong>. This mana is split and distributed directly to the Priest and all group members within 40 yards.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Mage -->
+                    <div class="card mage" data-tag="mage">
+                        <h3>❄️ Mage</h3>
+                        <ul>
+                            <li><strong>Frost Stance (Tank Specialization):</strong> Toggling Frost Stance scales Stamina, Intellect, and Spell Power into flat damage reduction and increased threat.</li>
+                            <li><strong>Frostbolt Strike:</strong> Frostbolt is converted into an <strong>instant melee strike</strong>. Cast times are automatically canceled during preparation, triggering weapon swings and instant frost damage within 5 yards.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Warlock -->
+                    <div class="card warlock" data-tag="warlock">
+                        <h3>😈 Warlock</h3>
+                        <ul>
+                            <li><strong>Metamorphosis (Permanent Toggle):</strong> Transforms Metamorphosis into a permanent demon tanking form with boosted armor, threat, and mitigation.</li>
+                            <li><strong>Searing Pain:</strong> Searing Pain is converted to a fully <strong>instant-cast spell</strong>. Autocancels spellcast preparation to eliminate spellbar stuttering and double-casts.</li>
+                            <li><strong>Nether Swap:</strong> Toggling Detect Invisibility swaps positions with your target and triggers a <strong>Shadowfury</strong> shadow blast/stun at the destination (15-second cooldown).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Hunter -->
+                    <div class="card hunter" data-tag="hunter">
+                        <h3>🏹 Hunter</h3>
+                        <ul>
+                            <li><strong>Melee Hunter Spec:</strong> Raptor Strike now applies the <strong>Agile Hunter</strong> buff (+5% melee damage, stacks up to 3 times, lasts 10s). Mongoose Bite's dodge requirement is bypassed; Raptor Strike has a 30% chance to reset the cooldown of Mongoose Bite and cast it instantly.</li>
+                            <li><strong>Pet Happiness QoL:</strong> Happiness decay is completely disabled. Pets are permanently locked at maximum <strong>Happy</strong> (+125% damage modifier). Feed Pet is deprecated.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Shaman -->
+                    <div class="card shaman" data-tag="shaman">
+                        <h3>⚡ Shaman</h3>
+                        <ul>
+                            <li><strong>Enhancement Haste:</strong> Equipping a 2-Handed weapon OR dual-wielding weapons grants a permanent <strong>+20% melee attack haste</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Gunslinger -->
+                    <div class="card hunter" data-tag="hunter subclass">
+                        <h3>🔫 Gunslinger (Subclass)<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Three Talent Trees:</strong> Opt into custom 31-point trees: <strong>Catalyst</strong> (elemental procs & static charge), <strong>Fortune</strong> (crit/luck scaling & roll manipulation), and <strong>Munitions</strong> (AoE shrapnel & explosive area zones).</li>
+                            <li><strong>Ante Mana System:</strong> Auto Shot and special ranged shots consume mana to roll for powerful elemental and utility procs.</li>
+                            <li><strong>Dynamic Procs:</strong> Roll for procs like <strong>Lava Shot</strong> (Lava Burst), <strong>Ice Lance</strong>, <strong>Lightning Shot</strong> (Chain Lightning), <strong>Bullet Time</strong> (Rapid Fire), or <strong>Jackpot</strong> (massive Holy blast and self-heal).</li>
+                            <li><strong>Database & Addon Sync:</strong> Character talents persist in the database and synchronize directly with the custom <code>GunslingerTalents</code> client interface.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Spellslinger -->
+                    <div class="card mage" data-tag="mage subclass">
+                        <h3>⚔️ Spellslinger (Subclass)<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Spellsword Specialization:</strong> Transforms the Mage into a dynamic melee combatant, combining sword strikes with instantaneous arcane, fire, and frost elemental enhancements.</li>
+                            <li><strong>Elemental Enchants:</strong> Imbue weapons dynamically to trigger spell effects on hits, generating spell charge resources.</li>
+                            <li><strong>Barriers & Wards:</strong> Replaces normal cloth shielding with dense physical-warding barriers that absorb damage and convert it into mana or melee haste.</li>
+                            <li><strong>Sword Throw:</strong> A ranged ability throwing a projected magical sword that pierces enemies in a straight line, dealing spell-scaled damage and pulling the Mage to the final target.</li>
+                            <li><strong>Custom Spell IDs:</strong> Utilizes a dedicated client/server spell line mapping to custom spell records (IDs `101001` - `101005`).</li>
+                        </ul>
+                    </div>
+
+                    <!-- ARPG Mobility System -->
+                    <div class="card system" data-tag="subclass">
+                        <h3>🏃 ARPG Mobility System<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Class Blinks:</strong> Using core mobility spells (Sprint, Bloodrage, Fade, Aspect of the Cheetah, Dash, Ghost Wolf, Horn of Winter) instantly <strong>blinks</strong> the player forward 10-12 yards.</li>
+                            <li><strong>Secondary Spell Effects:</strong> Blinking triggers class-specific interactions (e.g. Fade triggers a Holy Nova, Bloodrage triggers a Judgment visual).</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 2: UTILITIES -->
+            <section id="world-qol">
+                <h2>🌍 World Utilities & Quality of Life</h2>
+                <div class="utility-list">
+                    
+                    <div class="utility-item">
+                        <div class="utility-icon">🔑</div>
+                        <div class="utility-content">
+                            <h4>Dual Talent Specialization</h4>
+                            <p>Required level lowered to <strong>30</strong>. Gold cost reduced from 1,000g to a flat <strong>100 Gold</strong>, purchasable at Chronos.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">💰</div>
+                        <div class="utility-content">
+                            <h4>Flat Talent Respec Fee</h4>
+                            <p>Talent reset fees no longer scale exponentially. Cost is locked at a flat, cheap <strong>1 Gold</strong> per reset.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">📖</div>
+                        <div class="utility-content">
+                            <h4>Auto-Learn Spells</h4>
+                            <p>Visiting class trainers to buy spells is no longer required. All spells are automatically learned for free on level-up and login.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🚀</div>
+                        <div class="utility-content">
+                            <h4>Fast Hearthstone</h4>
+                            <p>Hearthstone cooldown reduced from 30 minutes down to a quick <strong>5-minute cooldown</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🔄</div>
+                        <div class="utility-content">
+                            <h4>Transmogrification</h4>
+                            <p>Customize your look at <strong>Warpweaver Charles</strong> in Stormwind/Orgrimmar for 10 Gold per slot (same armor class rules apply).</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">👥</div>
+                        <div class="utility-content">
+                            <h4>Account-Wide Collections</h4>
+                            <p>All mounts and companion pets are synchronized and unlocked account-wide on character login.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">⛏️</div>
+                        <div class="utility-content">
+                            <h4>Multi-Gathering Professions</h4>
+                            <p>Learn Mining, Herbalism, and Skinning simultaneously at <strong>Master Gatherer Sandre</strong> without consuming your two primary profession slots.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">📦</div>
+                        <div class="utility-content">
+                            <h4>Group Quest Loot Sharing</h4>
+                            <p>Quest items looted by any party member are automatically duplicated to all nearby group members on the same quest step.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🌀</div>
+                        <div class="utility-content">
+                            <h4>Dungeon Teleporter NPC</h4>
+                            <p>Talk to <strong>Chronos</strong> in capital cities to instantly warp to any classic dungeon or raid entrance.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🏺</div>
+                        <div class="utility-content">
+                            <h4>Chronoboon World Buff Saver</h4>
+                            <p>Save and restore all active world buffs (Onyxia, Rend, Hakkar, Dire Maul, etc.) at Chronos to prevent decay when offline or in PvP.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🔮</div>
+                        <div class="utility-content">
+                            <h4>Reagent & Soul Shard Replenisher</h4>
+                            <p>Warlocks start with 15 Soul Shards on login/instance entry. Reagents for major buffs and resurrections are instantly refunded on cast.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🎭</div>
+                        <div class="utility-content">
+                            <h4>Free Racial Ability Swapping</h4>
+                            <p>Swap character racials at Chronos for free. Persistent. Uses **fast session memory caching** (<code>SetData</code> / <code>GetData</code>) to eliminate database lookup lag and gossip menu lag.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🐎</div>
+                        <div class="utility-content">
+                            <h4>Auto-Dismount on Cast<span class="tag-new">New</span></h4>
+                            <p>Casting any active spell while mounted will now automatically dismount your character instead of returning an error.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🦅</div>
+                        <div class="utility-content">
+                            <h4>Account-Wide Flight Paths<span class="tag-new">New</span></h4>
+                            <p>Any flight paths discovered on one character are immediately unlocked and synchronized account-wide on login.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🤝</div>
+                        <div class="utility-content">
+                            <h4>Cross-Faction Guilds & Groups<span class="tag-new">New</span></h4>
+                            <p>Full cross-faction grouping, messaging, guild memberships, calendar events, arenas, and shared auction houses are enabled.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">❌</div>
+                        <div class="utility-content">
+                            <h4>No Resurrection Sickness<span class="tag-new">New</span></h4>
+                            <p>Resurrecting at a Spirit Healer no longer inflicts the 10-minute 75% stat penalty. Rez sickness has been disabled completely.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🌐</div>
+                        <div class="utility-content">
+                            <h4>Playit.gg Tunnel Connection<span class="tag-new">New</span></h4>
+                            <p>Log in securely from anywhere using Playit.gg. Set realmlist to <code>craig-superman.with.playit.plus:1272</code>. Friends can join via the <strong>Classic+ (Public)</strong> realm (routing to <code>craig-nested.with.playit.plus:1273</code>), while the host plays with 0ms latency on <strong>Classic+ (Local)</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🦅</div>
+                        <div class="utility-content">
+                            <h4>Flight Path Dismounting<span class="tag-new">New</span></h4>
+                            <p>Type <code>.dismount</code> or <code>dismount</code> while on a flight taxi to cancel the flight path in-place. Instantly teleports you to your current location and applies Mage's <strong>Slow Fall</strong> to prevent fall damage.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">👥</div>
+                        <div class="utility-content">
+                            <h4>Group XP Scaler<span class="tag-new">New</span></h4>
+                            <p>Experience division penalties are completely eliminated in group play. All group members receive 100% of the normal solo experience points from creature kills.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">💀</div>
+                        <div class="utility-content">
+                            <h4>Hardcore Challenge Mode<span class="tag-new">New</span></h4>
+                            <p>Opt-in to a permanent death challenge at Chronos. Upon dying, your character enters permanent ghost mode, cannot resurrect, and a world-wide announcement is broadcasted.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">📞</div>
+                        <div class="utility-content">
+                            <h4>Meeting Stone Summoning<span class="tag-new">New</span></h4>
+                            <p>All Meeting Stones throughout Azeroth are fully functional. Clicking them opens a gossip menu allowing you to summon any group member, requiring at least 2 players nearby.</p>
+                        </div>
+                    </div>
+
+                    <div class="utility-item">
+                        <div class="utility-icon">🛠️</div>
+                        <div class="utility-content">
+                            <h4>Merchant Repairs Stabilization<span class="tag-new">New</span></h4>
+                            <p>Refactored merchant repair scripting to deduct accurate coin sums instead of providing free services. Stabilized sub-menus to prevent client gossip crashes.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 3: PVP & CHALLENGES -->
+            <section id="pvp-dungeons">
+                <h2>⚔️ PvP & Dungeon Systems</h2>
+                <div class="grid-2">
+                    
+                    <!-- Rogue-lite maps -->
+                    <div class="card" style="border-color: rgba(212, 175, 55, 0.35);">
+                        <h3>🗺️ Rogue-lite Dungeon Map System<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Consumable Map Items:</strong> Roll map items (Item <code>99205</code>) that designate a target dungeon, keystone level (+1 to +10), and random combat affixes. Use the item in inventory to view a custom details window.</li>
+                            <li><strong>Map Device:</strong> Interact with the Map Device (Creature <code>99200</code>) next to Chronos in capital cities. It consumes the map, records run parameters on all group members, and warps the party to the instance.</li>
+                            <li><strong>Glimmering Shrines:</strong> Spawns an interactable crystalline entity (Creature <code>99201</code>) at the start of mapped instances. Players can select one of four powerful blessings:
+                                <ul>
+                                    <li><em class="highlight-gold">Blessing of the Glass Cannon:</em> +50% Damage Dealt, +50% Damage Taken.</li>
+                                    <li><em class="highlight-blue">Blessing of the Reckless Healer:</em> +50% Healing Done, +25% Damage Taken.</li>
+                                    <li><em class="highlight-blue">Blessing of the Swift Thief:</em> +30% Speed, +15% Damage Dealt, +43% Damage Taken.</li>
+                                    <li><em class="highlight-gold">Blessing of the Fortified Shield:</em> -30% Damage Taken, -30% Movement Speed.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Boss Combat Affixes:</strong> Entering combat with any dungeon boss scales boss health (+8% per key level) and damage, and activates the rolled affix scripts:
+                                <ul>
+                                    <li><strong>Volcanic:</strong> Eruptions periodically spawn under players.</li>
+                                    <li><strong>Sanguine:</strong> Mobs leave healing pools under themselves upon death.</li>
+                                    <li><strong>Bolstering:</strong> Minions spawn at 75% & 35% health; their deaths buff boss damage by +20% per stack.</li>
+                                    <li><strong>Explosive:</strong> Orbs spawn; must be destroyed within 6s or deal 50% max HP damage.</li>
+                                    <li><strong>Necrotic:</strong> Boss strikes stack a healing reduction (2% per stack, up to 50% max).</li>
+                                    <li><strong>Quaking:</strong> Tremors periodically interrupt and silence spellcast tracks for 5s.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Boss Map Drops:</strong> Dungeon bosses have a 100% chance (for testing) to drop maps bound to their dungeon. The drop is distributed to all real group members (pets and bots are ignored).</li>
+                        </ul>
+                    </div>
+
+                    <!-- PvP Skirmishes -->
+                    <div class="card">
+                        <h3>🏆 PvP Skirmishes & Arenas</h3>
+                        <ul>
+                            <li><strong>1v1 Solo Queue:</strong> Queue up for 1v1 arena matches directly at <strong>Gladiator Justin</strong>. Features 15s freeze preparation in Gurubashi Arena.</li>
+                            <li><strong>Custom Leaderboards:</strong> In-game Top 10 Leaderboard dynamically registers wins, losses, and active winrates.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Dungeon QoL -->
+                    <div class="card">
+                        <h3>🚪 Dungeon Quality of Life & Doors<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Deadmines Progression Doors:</strong> Defeating Rhahk'Zor, Sneed, or Gilnid now immediately and permanently opens their respective locked gates (Factory Door, Mast Room Door, and Foundry Gate).</li>
+                            <li><strong>Door Status Persistence:</strong> Re-entering or soft-resetting the instance checks boss status from database, ensuring completed doors stay open.</li>
+                            <li><strong>Dynamic Loot Scaler:</strong> Drops scale based on group size. Completing instances with small groups awards bonus items: Solo/1-man = <strong class="highlight-gold">+3 items</strong>; 2-man/3-man = <strong class="highlight-blue">+2 items</strong>; 4-man/5-man = <strong class="highlight-blue">+1 item</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Beast Cavern Custom Dungeon -->
+                    <div class="card">
+                        <h3>🌲 Custom Dungeon: Beast Cavern<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Location:</strong> Accessed via the <strong>Beast Cavern Entrance</strong> portal in northeast Elwynn Forest (near Stone Cairn Lake and the waterfall).</li>
+                            <li><strong>Level Range:</strong> A custom instanced dungeon tuned specifically for low-level players (<strong>Levels 6-10</strong>), repurposing the classic Ragefire Chasm map.</li>
+                            <li><strong>Encounters:</strong> Defeat Tunnel Thugs and spiders to face custom bosses <strong>Fedfennel the Packleader</strong>, <strong>Old Icebeard</strong>, and the overseer <strong>Gruff</strong>.</li>
+                            <li><strong>Gathering Nodes:</strong> High density of Copper Veins, Peacebloom, and Silverleaf inside for gathering professions.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5-Man World Boss Scaling -->
+                    <div class="card">
+                        <h3>🐉 5-Man World Boss Scaling<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Scaled Raid Bosses:</strong> Level 60 open-world raid bosses (Azuregos, Lord Kazzak, and the 4 Dragons of Nightmare: Ysondre, Lethon, Emeriss, Taerar) are scaled down for 5-man groups.</li>
+                            <li><strong>Stat Modifiers:</strong> Maximum health scaled down to <strong>15%</strong> and damage scaled down to <strong>35%</strong> of their raid baseline, allowing single-group challenges.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Daily Dungeon Bounties -->
+                    <div class="card">
+                        <h3>📅 Daily Dungeon Bounties<span class="tag-new">New</span></h3>
+                        <ul>
+                            <li><strong>Daily Boss Challenge:</strong> Speak to Chronos to receive a daily target dungeon boss (ranging from Taragaman in RC to Baron Rivendare in Stratholme).</li>
+                            <li><strong>Mythic Requirement:</strong> Defeat the target boss with at least 1 Mythic+ modifier active to complete the bounty.</li>
+                            <li><strong>Gold Reward:</strong> Complete and claim your daily bounty at Chronos for a flat reward of <strong>5 Gold</strong>.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 4: AI PLAYERBOTS & NEMESIS SYSTEM -->
+            <section id="playerbots">
+                <h2>🤖 AI Playerbots & Nemesis System</h2>
+                <div class="grid-3">
+                    
+                    <div class="card" style="border-color: rgba(239, 35, 60, 0.4);">
+                        <h3>💀 The Nemesis System (Sworn Rivals)</h3>
+                        <ul>
+                            <li><strong>Rival Assignment:</strong> Upon reaching level 10, a random level-appropriate playerbot of the opposite faction is designated as your <strong>Sworn Rival</strong>.</li>
+                            <li><strong>Open-World Invasions:</strong> Your Rival has a 10% chance every 3 minutes in contested zones to log in, teleport nearby, and attack you. A notification alerts you: <em>"You feel hunted... an invasion is imminent!"</em></li>
+                            <li><strong>Class-Specific Ambush AI:</strong> Spawn mechanics adjust based on the bot's class:
+                                <ul>
+                                    <li><em class="highlight-gold">Rogues & Druids:</em> Teleport in stealth behind the player, follow for 6-10s, and open with <em>Cheap Shot</em> or <em>Pounce</em>.</li>
+                                    <li><em class="highlight-blue">Hunters:</em> Teleport at range (18 yards) and cast Frost/Freezing traps at your feet before engaging.</li>
+                                    <li><em class="highlight-gold">Melee/Casters:</em> Teleport 15 yards away and charge/cast immediately.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Nemesis Ranks:</strong> Defeating or dying to your rival scales their Nemesis Rank from 1 to 5. Higher ranks increase their target stats and enlarge their physical model (+4% size per rank).</li>
+                            <li><strong>Exile Orb Loot:</strong> Defeating your rival awards <strong>Exile Crafting Orbs</strong> based on their rank: Rank 1 gives basics (Transmutation/Alteration/Augmentation); Rank 2 adds Scouring/Regal; Rank 3 gives Chaos/Alchemy; Rank 4 adds Exalted; Rank 5 awards a <strong>guaranteed Exalted Orb</strong>!</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="border-color: rgba(0, 180, 216, 0.4);">
+                        <h3>⚔️ Dynamic Zone Invasions</h3>
+                        <ul>
+                            <li><strong>Zone Assaults:</strong> Scheduled or GM-triggered zone-wide PvE invasions in major leveling territories: Westfall (max lvl 20), Redridge (max 25), Duskwood (max 30), Stranglethorn (max 45), Tanaris (max 50), and Silithus (max 60).</li>
+                            <li><strong>Themes:</strong> Assailing forces roll one of three random themes: <strong>Burning Legion Incursion</strong>, <strong>Scourge Invasion</strong>, or <strong>Elemental Rift</strong>.</li>
+                            <li><strong>Phase 1 (Portal Rifts):</strong> Spawns 3 high-energy portal rifts across the zone. Each portal is defended by 4 minion mobs and a powerful Elite Portal Guardian. Players must defeat the guardians to close the portals.</li>
+                            <li><strong>Phase 2 (Commander Boss):</strong> Closing all portals spawns a giant Elite Commander boss (e.g. Doomguard Elite or Abomination Elite) at the zone's center. Defeating the commander successfully repels the invasion and broadcasts a server-wide victory.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="border-color: rgba(255, 255, 255, 0.15);">
+                        <h3>💬 AI Personalities & Bounty Hunting</h3>
+                        <ul>
+                            <li><strong>Gemini AI Chat:</strong> Playerbots whisper you contextually upon defeat or victory, generating customized dialogues based on level, class, and zone.</li>
+                            <li><strong>20 MMO Personalities:</strong> Bots chat in General channels and parties under 20 distinct gamer personas (Tryhard, Casual, Sarcastic Troll, Gold Spammer, etc.).</li>
+                            <li><strong>Wanted Board Bounties:</strong> High-rank bots place bounties on real players, tracked on Wanted Boards (GameObject <code>99000</code>). Defeating the bot collects their gold bounty.</li>
+                            <li><strong>Ambush team-ups:</strong> Level 30+ players have a 30% chance for a second helper bot to spawn and assist the rival during open-world invasions.</li>
+                            <li><strong>Delayed Bot Removal:</strong> Non-blocking delay event (2-4s) via Eluna <code>CreateLuaEvent</code> stabilizes server threads during logout transitions, preventing coordinate corruption and crash assertions.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 5: POE CRAFTING -->
+            <section id="poe-crafting">
+                <h2>🛠️ Path of Exile Simplified Crafting System</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    A complete server-side gear enhancement system has been introduced. Right-clicking custom crafting Orbs in your bags opens a dynamic gossip interface showing eligible equippable items (Weapons/Armor) in your inventory. Item Crafting Benches (GameObject <code>99200</code>) have been placed in Stormwind and Orgrimmar main cities.
+                </p>
+                <div class="grid-3">
+                    <div class="card" style="border-color: rgba(212, 175, 55, 0.35);">
+                        <h3 style="color: var(--gold);">⚡ Exalted Orb</h3>
+                        <div class="currency-block">
+                            <div class="currency-title">✨ Double Stat Slamming</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Slams a level-scaled random stat enchantment onto any Weapon or Armor (Max 2 slams).</p>
+                        </div>
+                        <div class="currency-block">
+                            <div class="currency-title">🔗 Fully Linkable Affixes</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Slam 1 is placed in Slot 0 and Slam 2 in Slot 5. Both slots are natively serialized, making all slams visible in chat links.</p>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color: rgba(0, 180, 216, 0.35);">
+                        <h3 style="color: var(--blue);">🧹 Orb of Scouring</h3>
+                        <div class="currency-block">
+                            <div class="currency-title">🧼 Safe Affix Clearing</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Wipes all custom crafted slams from Slot 0 and Slot 5, returning the item to its blank state.</p>
+                        </div>
+                        <div class="currency-block">
+                            <div class="currency-title">💎 Socket & Gem Safety</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Scouring is non-destructive and will never clear standard enchants, socketed gems, or native socket colors.</p>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color: #ef233c;">
+                        <h3 style="color: #ef233c;">🔮 Vaal Orb</h3>
+                        <div class="currency-block">
+                            <div class="currency-title">👿 Unpredictable Corruption</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Adds a powerful implicit stat to Slot 7 (hidden on chat links). Corrupted items can never be modified or scoured.</p>
+                        </div>
+                        <div class="currency-block">
+                            <div class="currency-title">🎲 Success vs. Brick</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);"><strong>Success (75%):</strong> Adds implicit and keeps slams. <br><strong>Brick (25%):</strong> Adds implicit and wipes slams.</p>
+                        </div>
+                        <div class="currency-block">
+                            <div class="currency-title">⚖️ Tiers & Trade-in</div>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Implicits scale across 4 tiers based on item level. Trade 3x Exalted Orbs for 1x Vaal Orb at any Benches.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: CLIENT ADDONS & GRAPHICS PATCHES -->
+            <section id="client-addons">
+                <h2>🎨 Client Addons & Graphics Patches</h2>
+                <div class="grid-2">
+                    
+                    <div class="card" style="border-color: var(--blue-glow);">
+                        <h3>🔌 Custom Client Addons</h3>
+                        <ul>
+                            <li><strong>InvasionsSystem Addon:</strong>
+                                <ul>
+                                    <li>Draggable portal-style minimap icon to toggle the dashboard tracking panel.</li>
+                                    <li>Glassmorphic tracking window showing active invasion zones, remaining portals, and theme.</li>
+                                    <li>Glowing warning icons on the World Map and custom screen alerts synced with audio cues.</li>
+                                    <li>Integrated GM dashboard tools to start/stop invasions with one click.</li>
+                                </ul>
+                            </li>
+                            <li><strong>NemesisSystem Addon:</strong>
+                                <ul>
+                                    <li>Renders a dark-themed UI panel showing active rivals, ranks, wins/losses, and recent encounter stats.</li>
+                                    <li>Toggled via chat commands: <code>/nemesis</code>, <code>/rivals</code>, or <code>.nemesis</code>.</li>
+                                    <li>Integrates a <strong>"Hunt"</strong> button that allows players to force-trigger an invasion for instant rival testing.</li>
+                                </ul>
+                            </li>
+                            <li><strong>POECraft Addon:</strong>
+                                <ul>
+                                    <li>Meta-crafting tooltip overlays showing added suffixes, prefixes, and item tiers.</li>
+                                    <li>Unified green/cyan border color synchronization across inventory bags, bank slots, and equipment frames.</li>
+                                    <li>Silent debug logging configuration (<code>DEBUG = false</code>) for clean chat streams.</li>
+                                </ul>
+                            </li>
+                            <li><strong>GunslingerTalents Addon:</strong>
+                                <ul>
+                                    <li>Integrates the custom 31-point talent trees (Catalyst, Fortune, Munitions) directly into the Hunter UI.</li>
+                                    <li>Saves selections to the character database, communicating changes in real-time.</li>
+                                </ul>
+                            </li>
+                            <li><strong>SpellslingerTalents Addon:</strong>
+                                <ul>
+                                    <li>Dedicated custom talent selection interface for the Mage Spellslinger subclass, allowing allocation of spellsword combat path talents.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="border-color: var(--gold-glow);">
+                        <h3>🖥️ Graphics Configuration & Security Patches</h3>
+                        <ul>
+                            <li><strong>HD Graphics Configuration:</strong> Character models, creatures, and environment textures upgraded utilizing:
+                                <ul>
+                                    <li><code>patch-C.MPQ</code> (6.02 GB)</li>
+                                    <li><code>Patch-D.MPQ</code> (1.04 GB)</li>
+                                    <li><code>patch-F.MPQ</code> (1.32 GB)</li>
+                                    <li><code>Patch-I.MPQ</code> (539 MB)</li>
+                                    <li><code>patch-M.MPQ</code> (48.7 MB)</li>
+                                    <li><code>Patch-S.MPQ</code> (101 MB)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Wow.exe Security Bypass:</strong> Applied patches to bypass MD5 and signature checks on customized client MPQ resources.</li>
+                            <li><strong>LAA Memory Patch:</strong> Executed <code>4gb_patch.exe</code> (Large Address Aware) on the client executable to prevent Error 132 memory allocation crashes.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 7: BALANCE RESULTS -->
+            <section id="balance-metrics">
+                <div class="table-section-header">
+                    <h2>⚖️ Combat Simulation & Class Balance Fine-Tuning</h2>
+                    
+                    <!-- Table Interactive Controls -->
+                    <div class="table-controls">
+                        <input type="text" class="table-search" id="tableSearchInput" placeholder="Filter by class or spec name...">
+                        <div class="table-filter-tabs">
+                            <button class="table-filter-btn active" data-role="all">All Specs</button>
+                            <button class="table-filter-btn" data-role="dps">DPS</button>
+                            <button class="table-filter-btn" data-role="heal">Healers</button>
+                            <button class="table-filter-btn" data-role="tank">Tanks</button>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Class balance is tuned and tested using our custom 60-second balance engine. All 31 player specializations have been calibrated. Below are the verified balance values:
+                </p>
+
+                <div class="table-container">
+                    <table id="balanceTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-col="class">Class & Spec</th>
+                                <th class="sortable" data-col="role">Role</th>
+                                <th class="sortable" data-col="metric">Target Metric</th>
+                                <th class="sortable" data-col="resource">Resource Stats</th>
+                                <th>Key Multipliers / Modifications</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- DPS -->
+                            <tr data-role="dps">
+                                <td class="class-text-hunter" data-val="Melee Hunter">Melee Hunter</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="590"><strong>590 DPS</strong></td>
+                                <td>11% Starved | 44 Mana</td>
+                                <td>Raptor Strike Agile Hunter buff, Mongoose reset procs, physical multiplier <code>1.15</code></td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-shaman" data-val="Enhancement Shaman">Enhancement Shaman</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="488"><strong>488 DPS</strong></td>
+                                <td>0% Starved | 39 Mana</td>
+                                <td>2H / Dual-Wield equipped grants <code>+20% melee haste</code></td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-warrior" data-val="Fury Warrior">Fury Warrior</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="486"><strong>486 DPS</strong></td>
+                                <td>2% Starved | 38 Rage</td>
+                                <td>Baseline warrior DPS scaling (high-tier outlier)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-hunter" data-val="Beast Mastery Hunter">Beast Mastery Hunter</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="482"><strong>482 DPS</strong></td>
+                                <td>20% Starved | 63 Mana</td>
+                                <td>Ranged damage buffed by +15% (multiplier <code>1.15</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-warlock" data-val="Demonology Warlock">Demonology Warlock</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="472"><strong>472 DPS</strong></td>
+                                <td>0% Starved | 1357 Mana</td>
+                                <td>Felguard commands and Decimation procs, damage multiplier <code>0.80</code></td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-paladin" data-val="Retribution Paladin">Retribution Paladin</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="454"><strong>454 DPS</strong></td>
+                                <td>17% Starved | 188 Mana</td>
+                                <td>Buffed to +55% damage (multiplier <code>1.55</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-rogue" data-val="Assassination Rogue">Assassination Rogue</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="451"><strong>451 DPS</strong></td>
+                                <td>27% Starved | 29 Energy</td>
+                                <td>Added +10% damage when equipped with daggers</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-mage" data-val="Fire Mage">Fire Mage</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="445"><strong>445 DPS</strong></td>
+                                <td>18% Starved | 194 Mana</td>
+                                <td>Buffed to +41% damage when not tanking (multiplier <code>1.41</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-rogue" data-val="Combat Rogue">Combat Rogue</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="444"><strong>444 DPS</strong></td>
+                                <td>14% Starved | 35 Energy</td>
+                                <td>Sinister Strike damage output and physical damage multipliers optimized</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-hunter" data-val="Survival Hunter">Survival Hunter</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="437"><strong>437 DPS</strong></td>
+                                <td>27% Starved | 54 Mana</td>
+                                <td>Ranged damage buffed by +22% (multiplier <code>1.22</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-warlock" data-val="Affliction Warlock">Affliction Warlock</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="431"><strong>431 DPS</strong></td>
+                                <td>8% Starved | 426 Mana</td>
+                                <td>DoT spread and Haunt scaling, multiplier <code>0.97</code></td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-shaman" data-val="Elemental Shaman">Elemental Shaman</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="422"><strong>422 DPS</strong></td>
+                                <td>23% Starved | 132 Mana</td>
+                                <td>Nature, Fire, and Frost spells buffed (multiplier <code>1.42</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-mage" data-val="Frost Mage">Frost Mage</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="421"><strong>421 DPS</strong></td>
+                                <td>7% Starved | 224 Mana</td>
+                                <td>Frostbolt spams & Brain Freeze scaling, multiplier <code>0.99</code></td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-warlock" data-val="Destruction Warlock">Destruction Warlock</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="419"><strong>419 DPS</strong></td>
+                                <td>18% Starved | 137 Mana</td>
+                                <td>Buffed to +53% damage when not tanking (multiplier <code>1.53</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-priest" data-val="Shadow Priest">Shadow Priest</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="418"><strong>418 DPS</strong></td>
+                                <td>0% Starved | 2920 Mana</td>
+                                <td>Buffed to +52% damage in Shadowform (multiplier <code>1.52</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-druid" data-val="Balance Druid">Balance Druid</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="416"><strong>416 DPS</strong></td>
+                                <td>0% Starved | 353 Mana</td>
+                                <td>Buffed to +35% damage in Moonkin Form (multiplier <code>1.35</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-paladin" data-val="Shockadin Paladin">Shockadin Paladin</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="415"><strong>415 DPS</strong></td>
+                                <td>0% Starved | 1831 Mana</td>
+                                <td>Holy Shock & Exorcism damage buffed by +130% (multiplier <code>2.30</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-rogue" data-val="Subtlety Rogue">Subtlety Rogue</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="409"><strong>409 DPS</strong></td>
+                                <td>42% Starved | 8 Energy</td>
+                                <td>Damage buffed by +40% (multiplier <code>1.40</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-hunter" data-val="Marksmanship Hunter">Marksmanship Hunter</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="408"><strong>408 DPS</strong></td>
+                                <td>29% Starved | 68 Mana</td>
+                                <td>Buffed to +65% damage with a ranged weapon equipped (multiplier <code>1.65</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-druid" data-val="Feral Cat Druid">Feral Cat Druid</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="407"><strong>407 DPS</strong></td>
+                                <td>38% Starved | 12 Energy</td>
+                                <td>Buffed to +50% damage in Cat Form (multiplier <code>1.50</code>)</td>
+                            </tr>
+                            <tr data-role="dps">
+                                <td class="class-text-warrior" data-val="Arms Warrior">Arms Warrior</td>
+                                <td><span class="role-badge role-dps">DPS</span></td>
+                                <td data-val="404"><strong>404 DPS</strong></td>
+                                <td>5% Starved | 32 Rage</td>
+                                <td>Added +10% damage when main hand is a 2H weapon (multiplier <code>1.10</code>)</td>
+                            </tr>
+
+                            <!-- HEALERS -->
+                            <tr data-role="heal">
+                                <td class="class-text-priest" data-val="Holy Priest">Holy Priest</td>
+                                <td><span class="role-badge role-heal">Heal</span></td>
+                                <td data-val="486"><strong>486 HPS</strong></td>
+                                <td>14% Starved | 232 Mana</td>
+                                <td>Optimized AoE healing baseline</td>
+                            </tr>
+                            <tr data-role="heal">
+                                <td class="class-text-druid" data-val="Restoration Druid">Restoration Druid</td>
+                                <td><span class="role-badge role-heal">Heal</span></td>
+                                <td data-val="483"><strong>483 HPS</strong></td>
+                                <td>5% Starved | 602 Mana</td>
+                                <td>High efficiency Rejuvenation & Wild Growth</td>
+                            </tr>
+                            <tr data-role="heal">
+                                <td class="class-text-paladin" data-val="Holy Paladin">Holy Paladin</td>
+                                <td><span class="role-badge role-heal">Heal</span></td>
+                                <td data-val="479"><strong>479 HPS</strong></td>
+                                <td>37% Starved | 127 Mana</td>
+                                <td>Beacon of Light and Holy Light spams, healing multiplier <code>0.38</code></td>
+                            </tr>
+                            <tr data-role="heal">
+                                <td class="class-text-priest" data-val="Discipline Priest">Discipline Priest</td>
+                                <td><span class="role-badge role-heal">Heal</span></td>
+                                <td data-val="454"><strong>454 HPS</strong></td>
+                                <td>9% Starved | 104 Mana</td>
+                                <td>Aegis shielding and Penance burst, healing multiplier <code>0.52</code></td>
+                            </tr>
+                            <tr data-role="heal">
+                                <td class="class-text-shaman" data-val="Restoration Shaman">Restoration Shaman</td>
+                                <td><span class="role-badge role-heal">Heal</span></td>
+                                <td data-val="437"><strong>437 HPS</strong></td>
+                                <td>10% Starved | 228 Mana</td>
+                                <td>Chain Heal and Earth Shield baseline scaling</td>
+                            </tr>
+
+                            <!-- TANKS -->
+                            <tr data-role="tank">
+                                <td class="class-text-warlock" data-val="Warlock Tank">Warlock Tank</td>
+                                <td><span class="role-badge role-tank">Tank</span></td>
+                                <td data-val="163"><strong>163 DPS / 491 TPS</strong></td>
+                                <td>11% Starved | 5 Mana</td>
+                                <td>Metamorphosis form, Searing Pain instant, threat multiplier 3.0x</td>
+                            </tr>
+                            <tr data-role="tank">
+                                <td class="class-text-mage" data-val="Frost Mage Tank">Frost Mage Tank</td>
+                                <td><span class="role-badge role-tank">Tank</span></td>
+                                <td data-val="155"><strong>155 DPS / 466 TPS</strong></td>
+                                <td>13% Starved | 91 Mana</td>
+                                <td>Frost Stance, instant Frostbolt, 54 HPS spell lifesteal, threat multiplier 3.0x</td>
+                            </tr>
+                            <tr data-role="tank">
+                                <td class="class-text-warrior" data-val="Protection Warrior">Protection Warrior</td>
+                                <td><span class="role-badge role-tank">Tank</span></td>
+                                <td data-val="162"><strong>162 DPS / 424 TPS</strong></td>
+                                <td>0% Starved | 100 Rage</td>
+                                <td>Shield Slam & Sunder Armor threat scaling</td>
+                            </tr>
+                            <tr data-role="tank">
+                                <td class="class-text-paladin" data-val="Protection Paladin">Protection Paladin</td>
+                                <td><span class="role-badge role-tank">Tank</span></td>
+                                <td data-val="156"><strong>156 DPS / 421 TPS</strong></td>
+                                <td>25% Starved | 103 Mana</td>
+                                <td>Taunt on Judgement, Holy Shield threat scaling</td>
+                            </tr>
+                            <tr data-role="tank">
+                                <td class="class-text-druid" data-val="Feral Bear Druid">Feral Bear Druid</td>
+                                <td><span class="role-badge role-tank">Tank</span></td>
+                                <td data-val="157"><strong>157 DPS / 407 TPS</strong></td>
+                                <td>1% Starved | 100 Rage</td>
+                                <td>Bear form, damage multiplier <code>1.15</code>, threat multiplier 2.05x (+75%)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        Classic+ Server Project &copy; 2026. Made with love for the WoW Emulation Community.
+    </footer>
+</div>
+
+<!-- Interactive Engine Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // ==========================================
+        // 1. GLOBAL SEARCH ENGINE
+        // ==========================================
+        const globalSearch = document.getElementById("globalSearchInput");
+        const cards = document.querySelectorAll(".card");
+        const utilities = document.querySelectorAll(".utility-item");
+
+        globalSearch.addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            // Filter Class Cards
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove("hidden");
+                } else {
+                    card.classList.add("hidden");
+                }
+            });
+
+            // Filter QoL utilities
+            utilities.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove("hidden");
+                } else {
+                    item.classList.add("hidden");
+                }
+            });
+        });
+
+        // ==========================================
+        // 2. CLASS FILTERING TABS (SECTION 1)
+        // ==========================================
+        const filterBtns = document.querySelectorAll(".class-filter-btn");
+        const classGrid = document.getElementById("classCardsGrid");
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                // Toggle active class
+                filterBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                const filter = btn.dataset.class;
+                const classCards = classGrid.querySelectorAll(".card");
+
+                classCards.forEach(card => {
+                    if (filter === "all") {
+                        card.classList.remove("hidden");
+                        return;
+                    }
+
+                    const tags = card.dataset.tag.split(" ");
+                    if (tags.includes(filter)) {
+                        card.classList.remove("hidden");
+                    } else {
+                        card.classList.add("hidden");
+                    }
+                });
+            });
+        });
+
+        // ==========================================
+        // 3. COMBAT BALANCE TABLE: SEARCH & ROLE FILTER
+        // ==========================================
+        const tableSearch = document.getElementById("tableSearchInput");
+        const tableFilters = document.querySelectorAll(".table-filter-btn");
+        const tableRows = document.querySelectorAll("#balanceTable tbody tr");
+
+        function filterTable() {
+            const searchQuery = tableSearch.value.toLowerCase().trim();
+            const activeFilterBtn = document.querySelector(".table-filter-btn.active");
+            const roleFilter = activeFilterBtn.dataset.role;
+
+            tableRows.forEach(row => {
+                const className = row.cells[0].textContent.toLowerCase();
+                const role = row.dataset.role;
+
+                const matchesSearch = className.includes(searchQuery);
+                const matchesRole = (roleFilter === "all" || role === roleFilter);
+
+                if (matchesSearch && matchesRole) {
+                    row.classList.remove("hidden");
+                } else {
+                    row.classList.add("hidden");
+                }
+            });
+        }
+
+        tableSearch.addEventListener("input", filterTable);
+
+        tableFilters.forEach(btn => {
+            btn.addEventListener("click", () => {
+                tableFilters.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                filterTable();
+            });
+        });
+
+        // ==========================================
+        // 4. COMBAT BALANCE TABLE: COLUMN SORTING
+        // ==========================================
+        const tableHeaders = document.querySelectorAll("#balanceTable th.sortable");
+        const tbody = document.querySelector("#balanceTable tbody");
+
+        let currentSort = { col: null, desc: false };
+
+        tableHeaders.forEach(th => {
+            th.addEventListener("click", () => {
+                const colType = th.dataset.col;
+                const rowsArray = Array.from(tableRows);
+
+                // Determine sort direction
+                let desc = false;
+                if (currentSort.col === colType) {
+                    desc = !currentSort.desc;
+                } else {
+                    desc = (colType === "metric"); // Default descending for DPS metrics
+                }
+
+                currentSort = { col: colType, desc: desc };
+
+                // Set headers indicator classes
+                tableHeaders.forEach(h => h.classList.remove("asc", "desc"));
+                th.classList.add(desc ? "desc" : "asc");
+
+                // Sorting calculation
+                rowsArray.sort((rowA, rowB) => {
+                    let valA, valB;
+
+                    if (colType === "class") {
+                        valA = rowA.cells[0].dataset.val.toLowerCase();
+                        valB = rowB.cells[0].dataset.val.toLowerCase();
+                        return desc ? valB.localeCompare(valA) : valA.localeCompare(valB);
+                    } 
+                    
+                    if (colType === "role") {
+                        valA = rowA.dataset.role.toLowerCase();
+                        valB = rowB.dataset.role.toLowerCase();
+                        return desc ? valB.localeCompare(valA) : valA.localeCompare(valB);
+                    }
+
+                    if (colType === "metric") {
+                        valA = parseFloat(rowA.cells[2].dataset.val);
+                        valB = parseFloat(rowB.cells[2].dataset.val);
+                        return desc ? valB - valA : valA - valB;
+                    }
+
+                    if (colType === "resource") {
+                        valA = rowA.cells[3].textContent.toLowerCase();
+                        valB = rowB.cells[3].textContent.toLowerCase();
+                        return desc ? valB.localeCompare(valA) : valA.localeCompare(valB);
+                    }
+
+                    return 0;
+                });
+
+                // Re-append sorted rows
+                rowsArray.forEach(row => tbody.appendChild(row));
+            });
+        });
+
+        // ==========================================
+        // 5. SIDEBAR NAVIGATION SCROLLSPY
+        // ==========================================
+        const sections = document.querySelectorAll("section");
+        const tocLinks = document.querySelectorAll(".toc-link");
+
+        function updateActiveLink() {
+            let index = sections.length;
+
+            while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+            
+            tocLinks.forEach((link) => link.classList.remove("active"));
+            
+            // Safe fallback if links exist
+            if (tocLinks[index]) {
+                tocLinks[index].classList.add("active");
+            }
+        }
+
+        window.addEventListener("scroll", updateActiveLink);
+        updateActiveLink(); // Trigger initially
+    });
+</script>
+</body>
+</html>
