@@ -1069,7 +1069,7 @@
                         <h3>🗺️ Rogue-lite Dungeon Map System<span class="tag-new">New</span></h3>
                         <ul>
                             <li><strong>Consumable Map Items:</strong> Roll map items (Item <code>99205</code>) that designate a target dungeon, keystone level (+1 to +10), and random combat affixes. Use the item in inventory to view a custom details window.</li>
-                            <li><strong>Map Device:</strong> Interact with the Map Device (Creature <code>99200</code>) next to Chronos in capital cities. It consumes the map, records run parameters on all group members, and warps the party to the instance.</li>
+                            <li><strong>Map Device:</strong> Interact with the Map Device (Creature <code>99200</code>) next to Chronos in capital cities. It consumes the map, records run parameters on all group members, and warps the party to the instance. <em class="highlight-gold">(Scales down to 0.35 in-game for a sleeker visual profile).</em></li>
                             <li><strong>Glimmering Shrines:</strong> Spawns an interactable crystalline entity (Creature <code>99201</code>) at the start of mapped instances. Players can select one of four powerful blessings:
                                 <ul>
                                     <li><em class="highlight-gold">Blessing of the Glass Cannon:</em> +50% Damage Dealt, +50% Damage Taken.</li>
@@ -1161,6 +1161,18 @@
                                     <li><em class="highlight-gold">Melee/Casters:</em> Teleport 15 yards away and charge/cast immediately.</li>
                                 </ul>
                             </li>
+                            <li><strong>Rival Progression & Titles:</strong> When your rival kills you, they level up, roll dynamic combat traits, and earn custom, rank-appropriate titles (e.g. <em>"The Kingslayer"</em>, <em>"The Relentless"</em>) announced globally on the server.</li>
+                            <li><strong>Dynamic Combat Traits:</strong> Higher-level rivals roll up to 3 strengths or weaknesses from a pool of 8 traits:
+                                <ul>
+                                    <li><em class="highlight-gold">Bloodthirsty:</em> +20% Lifesteal on all damage dealt.</li>
+                                    <li><em class="highlight-gold">Enraged (Low HP):</em> +50% speed and damage below 35% HP.</li>
+                                    <li><em class="highlight-gold">Iron Will:</em> 30% Physical damage reduction.</li>
+                                    <li><em class="highlight-gold">Spell Shield:</em> 30% chance to reflect magic spells.</li>
+                                    <li><em class="highlight-gold">CC Resist:</em> Automatically breaks crowd control every 10 seconds.</li>
+                                    <li><em class="highlight-gold">Arcane Shield (Low HP):</em> Absorbs a shield equal to 25% max health below 20% HP.</li>
+                                    <li><em class="highlight-blue">Vulnerability (Fire/Frost):</em> Takes 50% extra damage from Fire or Frost spell schools.</li>
+                                </ul>
+                            </li>
                             <li><strong>Nemesis Ranks:</strong> Defeating or dying to your rival scales their Nemesis Rank from 1 to 5. Higher ranks increase their target stats and enlarge their physical model (+4% size per rank).</li>
                             <li><strong>Exile Orb Loot:</strong> Defeating your rival awards <strong>Exile Crafting Orbs</strong> based on their rank: Rank 1 gives basics (Transmutation/Alteration/Augmentation); Rank 2 adds Scouring/Regal; Rank 3 gives Chaos/Alchemy; Rank 4 adds Exalted; Rank 5 awards a <strong>guaranteed Exalted Orb</strong>!</li>
                         </ul>
@@ -1181,7 +1193,7 @@
                         <ul>
                             <li><strong>Gemini AI Chat:</strong> Playerbots whisper you contextually upon defeat or victory, generating customized dialogues based on level, class, and zone.</li>
                             <li><strong>20 MMO Personalities:</strong> Bots chat in General channels and parties under 20 distinct gamer personas (Tryhard, Casual, Sarcastic Troll, Gold Spammer, etc.).</li>
-                            <li><strong>Wanted Board Bounties:</strong> High-rank bots place bounties on real players, tracked on Wanted Boards (GameObject <code>99000</code>). Defeating the bot collects their gold bounty.</li>
+                            <li><strong>Wanted Board visual GUI:</strong> Clicking any Wanted Board (GameObject <code>99100</code> or original <code>2713</code>) opens a medieval-themed visual parchment UI rather than a text menu. Track active PvP bot bounties and PvE elite monster hunt contracts, complete with custom gold and Path of Exile crafting orb rewards.</li>
                             <li><strong>Ambush team-ups:</strong> Level 30+ players have a 30% chance for a second helper bot to spawn and assist the rival during open-world invasions.</li>
                             <li><strong>Delayed Bot Removal:</strong> Non-blocking delay event (2-4s) via Eluna <code>CreateLuaEvent</code> stabilizes server threads during logout transitions, preventing coordinate corruption and crash assertions.</li>
                         </ul>
@@ -1251,6 +1263,20 @@
                                     <li>Glassmorphic tracking window showing active invasion zones, remaining portals, and theme.</li>
                                     <li>Glowing warning icons on the World Map and custom screen alerts synced with audio cues.</li>
                                     <li>Integrated GM dashboard tools to start/stop invasions with one click.</li>
+                                </ul>
+                            </li>
+                            <li><strong>WantedBoard Addon:</strong>
+                                <ul>
+                                    <li>Renders a medieval-themed visual parchment wanted board.</li>
+                                    <li>Displays real-time PvP bot contracts and PvE elite monster hunts with gold and Path of Exile orb rewards.</li>
+                                    <li>Integrates a <strong>"Rival Hierarchy"</strong> button to seamlessly view active nemesis relationships.</li>
+                                </ul>
+                            </li>
+                            <li><strong>NemesisHierarchy Addon:</strong>
+                                <ul>
+                                    <li>Displays a dark-red themed grid panel depicting active rivals, their ranks, levels, and win/loss records.</li>
+                                    <li>Interactive trait badges showing active strengths (red border) and weaknesses (blue border) with rich hover tooltips.</li>
+                                    <li>Provides an <strong>"Incite Hunt"</strong> button to trigger custom rival invasion ambushes.</li>
                                 </ul>
                             </li>
                             <li><strong>NemesisSystem Addon:</strong>
