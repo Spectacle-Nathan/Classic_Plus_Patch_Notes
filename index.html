@@ -1069,15 +1069,19 @@
                         <h3>🗺️ Rogue-lite Dungeon Map System<span class="tag-new">New</span></h3>
                         <ul>
                             <li><strong>Consumable Map Items:</strong> Roll map items (Item <code>99205</code>) that designate a target dungeon, keystone level (+1 to +10), and random combat affixes. Use the item in inventory to view a custom details window.</li>
+                            <li><strong>Map Chaos Orb:</strong> Rerolls the active affixes, quantity, and rarity modifiers of a dungeon map in your bags while preserving its key level and bound dungeon.</li>
+                            <li><strong>Loot Quantity & Rarity Scaling:</strong> Finishing a mapped dungeon awards upgraded loot. Quantity (+extra items) and Rarity (+quality weights) scale dynamically based on the map's key level and affix count.</li>
                             <li><strong>Map Device:</strong> Interact with the Map Device (Creature <code>99200</code>) next to Chronos in capital cities. It consumes the map, records run parameters on all group members, and warps the party to the instance. <em class="highlight-gold">(Scales down to 0.35 in-game for a sleeker visual profile).</em></li>
-                            <li><strong>Glimmering Shrines:</strong> Spawns an interactable crystalline entity (Creature <code>99201</code>) at the start of mapped instances. Players can select one of four powerful blessings:
+                            <li><strong>Glimmering Shrines:</strong> Spawns an interactable crystalline entity (Creature <code>99201</code>) at the start of mapped instances or at open-world leveling hubs (Sentinel Hill, Darkshire, Nesingwary's Camp, Gadgetzan). Select one of four powerful blessings:
                                 <ul>
                                     <li><em class="highlight-gold">Blessing of the Glass Cannon:</em> +50% Damage Dealt, +50% Damage Taken.</li>
                                     <li><em class="highlight-blue">Blessing of the Reckless Healer:</em> +50% Healing Done, +25% Damage Taken.</li>
                                     <li><em class="highlight-blue">Blessing of the Swift Thief:</em> +30% Speed, +15% Damage Dealt, +43% Damage Taken.</li>
                                     <li><em class="highlight-gold">Blessing of the Fortified Shield:</em> -30% Damage Taken, -30% Movement Speed.</li>
                                 </ul>
+                                <em class="highlight-blue">(Open-world shrine blessings have a strict 2-minute expiration timer).</em>
                             </li>
+                            <li><strong>Dungeon Boss Echoes:</strong> Transparent, scaled level-appropriate Echo Bosses (Edwin VanCleef, Bloodmage Thalnos, Scarlet Commander Mograine) spawn at leveling hubs. Defeating them guarantees a dungeon map drop.</li>
                             <li><strong>Boss Combat Affixes:</strong> Entering combat with any dungeon boss scales boss health (+8% per key level) and damage, and activates the rolled affix scripts:
                                 <ul>
                                     <li><strong>Volcanic:</strong> Eruptions periodically spawn under players.</li>
@@ -1174,7 +1178,7 @@
                                 </ul>
                             </li>
                             <li><strong>Nemesis Ranks:</strong> Defeating or dying to your rival scales their Nemesis Rank from 1 to 5. Higher ranks increase their target stats and enlarge their physical model (+4% size per rank).</li>
-                            <li><strong>Exile Orb Loot:</strong> Defeating your rival awards <strong>Exile Crafting Orbs</strong> based on their rank: Rank 1 gives basics (Transmutation/Alteration/Augmentation); Rank 2 adds Scouring/Regal; Rank 3 gives Chaos/Alchemy; Rank 4 adds Exalted; Rank 5 awards a <strong>guaranteed Exalted Orb</strong>!</li>
+                            <li><strong>Exile Orb Loot:</strong> Defeating your rival awards active crafting orbs based on their rank: Rank 1-3 awards <strong>Orbs of Scouring</strong> (at scaling chances up to 100% at Rank 3); Rank 4 awards a 25% chance of an <strong>Exalted Orb</strong> (otherwise Scouring); and Rank 5 awards a <strong>guaranteed Exalted Orb</strong>!</li>
                         </ul>
                     </div>
 
@@ -1206,7 +1210,7 @@
             <section id="poe-crafting">
                 <h2>🛠️ Path of Exile Simplified Crafting System</h2>
                 <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                    A complete server-side gear enhancement system has been introduced. Right-clicking custom crafting Orbs in your bags opens a dynamic gossip interface showing eligible equippable items (Weapons/Armor) in your inventory. Item Crafting Benches (GameObject <code>99200</code>) have been placed in Stormwind and Orgrimmar main cities.
+                    A complete server-side gear enhancement system has been introduced. Right-clicking custom crafting Orbs in your bags opens a dynamic gossip interface showing eligible equippable items (Weapons/Armor) in your inventory. The crafting system has been simplified to only utilize active, high-impact currencies (Exalted, Scouring, Vaal, and Map Chaos Orbs), removing unused legacy orbs.
                 </p>
                 <div class="grid-3">
                     <div class="card" style="border-color: rgba(212, 175, 55, 0.35);">
@@ -1290,6 +1294,8 @@
                                 <ul>
                                     <li>Meta-crafting tooltip overlays showing added suffixes, prefixes, and item tiers.</li>
                                     <li>Unified green/cyan border color synchronization across inventory bags, bank slots, and equipment frames.</li>
+                                    <li>Premium icon overrides for custom items (Treasure map icon for Dungeon Maps, glowing purple orb for Map Chaos Orbs).</li>
+                                    <li>Green <code>Use:</code> override on Dungeon Maps tooltips (replacing default Scroll of Intellect descriptions with appropriate map info).</li>
                                     <li>Silent debug logging configuration (<code>DEBUG = false</code>) for clean chat streams.</li>
                                 </ul>
                             </li>
