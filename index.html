@@ -30,6 +30,7 @@
             --color-mage: #40C7EB;
             --color-warlock: #8787ED;
             --color-druid: #FF7D0A;
+            --color-deathknight: #C41F3B;
         }
 
         * {
@@ -307,6 +308,7 @@
         .class-filter-btn.mage { --class-c: var(--color-mage); }
         .class-filter-btn.warlock { --class-c: var(--color-warlock); }
         .class-filter-btn.druid { --class-c: var(--color-druid); }
+        .class-filter-btn.deathknight { --class-c: var(--color-deathknight); }
         .class-filter-btn.subclass { --class-c: var(--blue); }
 
         .class-filter-btn.warrior.active,
@@ -318,6 +320,7 @@
         .class-filter-btn.mage.active,
         .class-filter-btn.warlock.active,
         .class-filter-btn.druid.active,
+        .class-filter-btn.deathknight.active,
         .class-filter-btn.subclass.active {
             border-color: var(--class-c);
             background: rgba(255, 255, 255, 0.05);
@@ -771,6 +774,7 @@
                     <button class="class-filter-btn mage" data-class="mage">Mage</button>
                     <button class="class-filter-btn warlock" data-class="warlock">Warlock</button>
                     <button class="class-filter-btn druid" data-class="druid">Druid</button>
+                    <button class="class-filter-btn deathknight" data-class="deathknight">Death Knight</button>
                     <button class="class-filter-btn subclass" data-class="subclass">Subclasses</button>
                 </div>
 
@@ -782,8 +786,32 @@
                         <ul>
                             <li><strong>Judgement (with Righteous Fury active):</strong> Now acts as an active <strong>Taunt</strong>. Instantly forces the target to attack you, and scales threat generation directly to <strong>110% of the highest threat target</strong> (minimum 5,000 threat). Plays a custom Druid Growl/Taunt visual on the target.</li>
                             <li><strong>Holy Shock (Shockadin Spec):</strong> Baselines and damage coefficients significantly scaled up, transforming the caster build into a highly competitive Holy DPS spec.</li>
-                            <li><strong>Level 18 Starter Pack & Spells:</strong> Custom Protection Paladin kit consisting of Soldier's Mail armor set, shield, weapon, 4x 24-slot Portable Holes, and early access to key tanking spells (Righteous Fury, Righteous Defense, and Spiritual Attunement) to enable smooth level-appropriate dungeon runs.</li>
                             <li><strong>Avenger's Shield Recast & Teleport:</strong> Re-casting Avenger's Shield while the shield is in-flight teleports the Paladin behind the target and triggers a <strong>Shield Burst</strong>, dealing high Holy damage to the target and nearby enemies within 8 yards (150 base + 15/level + 200% Int scaling).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Warrior -->
+                    <div class="card warrior" data-tag="warrior">
+                        <h3>🛡️ Warrior</h3>
+                        <ul>
+                            <li><strong>Rage Sustain (Out-of-Combat):</strong> Rage decay out of combat is disabled. Instead, rage naturally ticks up to <strong>30 Rage</strong> (or decays down to 30) so you can charge into fight with immediate resources.</li>
+                            <li><strong>Victory Rush (Leveling Sustain):</strong> Slaying an experience-yielding enemy automatically triggers a passive heal that restores <strong>15% of max health over 6 seconds</strong>, eliminating leveling downtime.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rogue -->
+                    <div class="card rogue" data-tag="rogue">
+                        <h3>🗡️ Rogue</h3>
+                        <ul>
+                            <li><strong>ARPG Splash Damage:</strong> Rogue auto-attacks and builders (Sinister Strike, Backstab, Mutilate, and Hemorrhage) deal <strong>30% splash damage</strong> to up to <strong>2 additional nearby targets</strong> within 5 yards.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Death Knight -->
+                    <div class="card deathknight" data-tag="deathknight">
+                        <h3>💀 Death Knight</h3>
+                        <ul>
+                            <li><strong>Level 1 Progression:</strong> Since Death Knights start at Level 1, core leveling abilities and ranks (Icy Touch, Plague Strike, Death Strike, Blood Strike, Horn of Winter, Death Grip, Mind Freeze, Death Coil, Rune Tap, Death and Decay, and Presences) are automatically taught from <strong>Level 1 to 55</strong>.</li>
                         </ul>
                     </div>
 
